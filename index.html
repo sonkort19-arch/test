@@ -1,0 +1,1921 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Экзамен мастера</title>
+  <style>
+    :root {
+      --bg: #f3f7ff;
+      --card: #ffffff;
+      --text: #1b2740;
+      --muted: #5f6f91;
+      --blue: #2a63ff;
+      --blue-soft: #e9efff;
+      --green: #1ea96a;
+      --green-soft: #e7f8f1;
+      --orange: #ff9f1a;
+      --orange-soft: #fff4e5;
+      --red: #dd2f45;
+      --red-soft: #ffecef;
+      --shadow: 0 10px 30px rgba(39, 79, 168, 0.12);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 0%, #ffffff, var(--bg) 45%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .app {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 18px 14px 34px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.9fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+
+    .input, .textarea, .select {
+      width: 100%;
+      border: 1px solid #d9e2f6;
+      border-radius: var(--radius-sm);
+      background: #fbfdff;
+      color: var(--text);
+      padding: 12px 12px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .input:focus, .textarea:focus, .select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(42, 99, 255, .12);
+    }
+
+    .textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 10px 0 16px;
+    }
+
+    .stat-pill {
+      background: var(--blue-soft);
+      color: #2b4ea4;
+      border-radius: 999px;
+      font-size: 13px;
+      padding: 8px 12px;
+      font-weight: 600;
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s transform, .2s opacity;
+      min-height: 46px;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(110deg, #2a63ff, #2158e7);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #eef3ff;
+      color: #2d4b9a;
+    }
+
+    .btn-success {
+      background: linear-gradient(110deg, #1ea96a, #178654);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: #feecee;
+      color: #bb2138;
+    }
+
+    .progress-wrap {
+      margin: 10px 0 16px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #e6edff;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-value {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(100deg, #2a63ff, #1ea96a);
+      transition: width .25s ease;
+    }
+
+    .question-card h2 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .badge-blue {
+      background: var(--blue-soft);
+      color: #2e56ad;
+    }
+
+    .badge-green {
+      background: var(--green-soft);
+      color: #16794d;
+    }
+
+    .badge-red {
+      background: var(--red-soft);
+      color: #ac1f33;
+    }
+
+    .question-text {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .helper-text {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      border: 1px solid #d8e2fb;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fcfdff;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+
+    .option:hover {
+      border-color: #b8cafb;
+      background: #f5f9ff;
+    }
+
+    .option.selected {
+      border-color: var(--blue);
+      background: #edf3ff;
+    }
+
+    .option input {
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      accent-color: #2a63ff;
+    }
+
+    .option span {
+      font-size: 15px;
+    }
+
+    .sticky-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      bottom: 10px;
+      background: rgba(255, 255, 255, .96);
+      padding: 10px;
+      border: 1px solid #e6ecfc;
+      border-radius: 14px;
+    }
+
+    .side-card + .side-card {
+      margin-top: 14px;
+    }
+
+    .side-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 14px;
+      color: #33446e;
+    }
+
+    .mini-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f8faff;
+      border: 1px solid #e5ebfb;
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .status-strong { color: #147549; }
+    .status-normal { color: #2456ad; }
+    .status-weak { color: #ab5f00; }
+    .status-critical { color: #b51f35; }
+
+    .result-head {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .metric {
+      background: #f8fbff;
+      border: 1px solid #e2ebfc;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .metric .k {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .metric .v {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .category-results {
+      display: grid;
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+
+    .category-row {
+      border: 1px solid #e1e9fb;
+      border-radius: 12px;
+      padding: 10px;
+      background: #fafcff;
+      display: grid;
+      grid-template-columns: 2fr .8fr .8fr 2fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .warning-box {
+      border: 1px solid #f2c6ce;
+      background: #fff4f6;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      color: #882235;
+    }
+
+    .good-box {
+      border: 1px solid #c9ebdb;
+      background: #f2fcf7;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      color: #0f6940;
+    }
+
+    .list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .list li + li {
+      margin-top: 4px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .history-table th,
+    .history-table td {
+      border-bottom: 1px solid #e7edfc;
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .history-table th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .admin-list {
+      max-height: 340px;
+      overflow: auto;
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+      padding-right: 2px;
+    }
+
+    .admin-item {
+      border: 1px solid #e5ebfc;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fafcff;
+      font-size: 13px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 960px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .result-head {
+        grid-template-columns: 1fr 1fr;
+      }
+      .category-row {
+        grid-template-columns: 1fr;
+      }
+      .sticky-actions {
+        position: static;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app {
+        padding: 12px 10px 26px;
+      }
+      .card {
+        padding: 14px;
+        border-radius: 16px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      .question-text {
+        font-size: 18px;
+      }
+      .btn {
+        width: 100%;
+      }
+      .buttons-row {
+        flex-direction: column;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .result-head {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+
+  <script>
+    // ===============================
+    // DATA / questions & config
+    // ===============================
+    const CATEGORIES = {
+      module: { name: "Модульный ремонт", weight: 25 },
+      diagnostics: { name: "Диагностика", weight: 20 },
+      soldering: { name: "Пайка", weight: 15 },
+      electronics: { name: "Электроника", weight: 15 },
+      speed: { name: "Скорость и организация", weight: 10 },
+      quality: { name: "Качество и аккуратность", weight: 10 },
+      sales: { name: "Продажи и клиент", weight: 5 }
+    };
+
+    const QUESTIONS_RAW = [
+      // Модульный ремонт (7)
+      {
+        id: "M1",
+        category: "module",
+        type: "single",
+        level: "critical",
+        critical: true,
+        topic: "Отключение АКБ",
+        text: "Перед заменой дисплея iPhone первым действием мастер должен:",
+        options: [
+          "Сразу снять старый дисплей",
+          "Отключить аккумулятор после разборки",
+          "Подключить новый дисплей на горячую",
+          "Сначала обновить iOS"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "M2",
+        category: "module",
+        type: "single",
+        level: "critical",
+        critical: true,
+        topic: "Проверка дисплея до установки",
+        text: "Когда нужно тестировать новый дисплейный модуль?",
+        options: [
+          "Только после полной сборки",
+          "До финальной фиксации и проклейки",
+          "Только на следующий день",
+          "Тестировать не обязательно"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "M3",
+        category: "module",
+        type: "multiple",
+        level: "important",
+        critical: false,
+        topic: "Перенос шлейфов",
+        text: "Что важно при переносе шлейфов и элементов на новый модуль? (несколько ответов)",
+        options: [
+          "Сохранять оригинальные датчики и порядок установки",
+          "Использовать подходящий инструмент и аккуратный нагрев",
+          "Можно потерять винты, это не влияет",
+          "Проверять целостность шлейфов под увеличением"
+        ],
+        correctAnswers: [0, 1, 3]
+      },
+      {
+        id: "M4",
+        category: "module",
+        type: "single",
+        level: "critical",
+        critical: true,
+        topic: "Face ID / Touch ID",
+        text: "Почему нельзя менять оригинальный шлейф Face ID / Touch ID на случайный?",
+        options: [
+          "Потому что изменится цвет дисплея",
+          "Потому что функция биометрии может быть безвозвратно потеряна",
+          "Потому что телефон не поймает сеть",
+          "Потому что увеличится расход батареи в 2 раза"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "M5",
+        category: "module",
+        type: "situational",
+        level: "important",
+        critical: false,
+        topic: "Ошибки сборки",
+        text: "После сборки экран работает, но не работает датчик приближения. Что делать?",
+        options: [
+          "Выдать клиенту, он не заметит",
+          "Проверить посадку шлейфа, датчик и состояние рамки, затем повторно протестировать",
+          "Сбросить настройки и не проверять железо",
+          "Сразу заменить системную плату"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "M6",
+        category: "module",
+        type: "assessment",
+        level: "normal",
+        critical: false,
+        topic: "Гарантийный случай",
+        text: "Клиент вернулся через 2 дня: отходит экран после вашей замены. Лучшее действие мастера:",
+        options: [
+          "Отказать сразу, это точно вина клиента",
+          "Принять на гарантийную проверку, зафиксировать состояние и перепроверить сборку",
+          "Попросить доплату без диагностики",
+          "Отложить на неделю без комментариев"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "M7",
+        category: "module",
+        type: "multiple",
+        level: "important",
+        critical: false,
+        topic: "Финальная проверка",
+        text: "Перед выдачей после замены дисплея нужно проверить: (несколько ответов)",
+        options: [
+          "Сенсор по всей площади",
+          "Яркость/автояркость и True Tone (если применимо)",
+          "Камеры, динамик и микрофон",
+          "Только включение экрана"
+        ],
+        correctAnswers: [0, 1, 2]
+      },
+
+      // Диагностика (6)
+      {
+        id: "D1",
+        category: "diagnostics",
+        type: "situational",
+        level: "critical",
+        critical: true,
+        topic: "Телефон после воды",
+        text: "Клиент принес телефон после воды. Что сделать первым?",
+        options: [
+          "Поставить на зарядку для проверки",
+          "Сначала разобрать и отключить АКБ",
+          "Прогреть феном без разборки",
+          "Сразу обновить ПО"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "D2",
+        category: "diagnostics",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Нет зарядки",
+        text: "Телефон не заряжается. С чего логичнее начать диагностику?",
+        options: [
+          "С замены платы",
+          "Проверить кабель/БП, разъем, ток потребления и состояние АКБ",
+          "Сразу менять аккумулятор без проверки",
+          "Оставить на ночь и посмотреть"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "D3",
+        category: "diagnostics",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Проблема платы vs модуля",
+        text: "Как отличить проблему платы от проблемы дисплейного модуля?",
+        options: [
+          "Никак, это одно и то же",
+          "Подкинуть заведомо исправный модуль и сравнить поведение",
+          "Переустановить мессенджер",
+          "Включить режим полета"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "D4",
+        category: "diagnostics",
+        type: "multiple",
+        level: "normal",
+        critical: false,
+        topic: "Быстро садится АКБ",
+        text: "При жалобе на быстрый разряд важно проверить: (несколько ответов)",
+        options: [
+          "Здоровье АКБ и циклы",
+          "Фоновые процессы/нагрев",
+          "Потребление тока на ЛБП",
+          "Только яркость экрана"
+        ],
+        correctAnswers: [0, 1, 2]
+      },
+      {
+        id: "D5",
+        category: "diagnostics",
+        type: "assessment",
+        level: "normal",
+        critical: false,
+        topic: "Проверка до ремонта",
+        text: "Мастер пропустил входную проверку камеры и сети, сразу взял в ремонт. Оценка действия:",
+        options: [
+          "Правильно, это экономит время",
+          "Ошибка: без входной фиксации сложно доказать исходное состояние",
+          "Допустимо только при замене стекла",
+          "Это вообще не влияет на работу"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "D6",
+        category: "diagnostics",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Нет изображения",
+        text: "Телефон включается, есть звук, но нет изображения. Приоритетный шаг:",
+        options: [
+          "Сразу менять CPU",
+          "Проверить подсветку, шлейфы дисплея и тестовым модулем исключить экран",
+          "Отдать клиенту как есть",
+          "Стереть все данные"
+        ],
+        correctAnswers: [1]
+      },
+
+      // Пайка (5)
+      {
+        id: "S1",
+        category: "soldering",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Температура пайки",
+        text: "Что верно про температуру при пайке разъема?",
+        options: [
+          "Чем выше, тем лучше",
+          "Температура подбирается под сплав/плату и контролируется, чтобы не перегреть",
+          "Температура не имеет значения",
+          "Всегда фиксированно 500°C"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "S2",
+        category: "soldering",
+        type: "multiple",
+        level: "normal",
+        critical: false,
+        topic: "Флюс и аккуратность",
+        text: "Хорошая практика при пайке: (несколько ответов)",
+        options: [
+          "Использовать качественный флюс",
+          "Защищать соседние элементы",
+          "После пайки очищать зону от остатков",
+          "Давить жалом на площадки силой"
+        ],
+        correctAnswers: [0, 1, 2]
+      },
+      {
+        id: "S3",
+        category: "soldering",
+        type: "situational",
+        level: "important",
+        critical: false,
+        topic: "Когда нельзя паять без диагностики",
+        text: "Разъем зарядки внешне цел. Клиент жалуется на отсутствие заряда. Лучшее действие:",
+        options: [
+          "Сразу выпаять и поставить новый",
+          "Провести диагностику цепи питания и только потом принимать решение о пайке",
+          "Подогнуть контакты иглой и выдать",
+          "Сказать, что ремонт невозможен"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "S4",
+        category: "soldering",
+        type: "assessment",
+        level: "normal",
+        critical: false,
+        topic: "Проверка после пайки",
+        text: "После замены микрофона мастер не сделал тест записи. Оценка:",
+        options: [
+          "Нормально, клиент проверит сам",
+          "Ошибка: после пайки нужен функциональный тест",
+          "Допустимо только на старых телефонах",
+          "Это не связано с качеством ремонта"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "S5",
+        category: "soldering",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Коннекторы",
+        text: "При пайке около коннекторов главная цель мастера:",
+        options: [
+          "Сделать как можно быстрее любой ценой",
+          "Избежать перегрева и механического повреждения посадочных мест",
+          "Нанести больше припоя для надежности",
+          "Не использовать микроскоп"
+        ],
+        correctAnswers: [1]
+      },
+
+      // Электроника (5)
+      {
+        id: "E1",
+        category: "electronics",
+        type: "single",
+        level: "normal",
+        critical: false,
+        topic: "Конденсатор",
+        text: "Конденсатор в цепи питания обычно нужен для:",
+        options: [
+          "Хранения/сглаживания энергии и фильтрации",
+          "Усиления громкости динамика",
+          "Передачи сигнала SIM",
+          "Охлаждения платы"
+        ],
+        correctAnswers: [0]
+      },
+      {
+        id: "E2",
+        category: "electronics",
+        type: "single",
+        level: "normal",
+        critical: false,
+        topic: "Резистор",
+        text: "Основная функция резистора:",
+        options: [
+          "Ограничивать ток/формировать делители напряжения",
+          "Заменять процессор",
+          "Усиливать Wi-Fi",
+          "Хранить заряд как аккумулятор"
+        ],
+        correctAnswers: [0]
+      },
+      {
+        id: "E3",
+        category: "electronics",
+        type: "critical",
+        level: "critical",
+        critical: true,
+        topic: "Короткое замыкание",
+        text: "Что ближе всего к определению короткого замыкания (КЗ)?",
+        options: [
+          "Повышенная яркость экрана",
+          "Низкоомное соединение, из-за которого ток идет не по штатному пути",
+          "Любой нагрев корпуса",
+          "Снижение громкости звонка"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "E4",
+        category: "electronics",
+        type: "situational",
+        level: "important",
+        critical: false,
+        topic: "Поиск КЗ",
+        text: "Как безопасно начать поиск КЗ на линии питания?",
+        options: [
+          "Подать максимальное напряжение сразу",
+          "Измерить сопротивление/прозвонку и подавать ограниченный ток с ЛБП",
+          "Сразу заменить все микросхемы",
+          "Игнорировать и собирать аппарат"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "E5",
+        category: "electronics",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Потребление тока",
+        text: "Что показывает анализ потребления тока на ЛБП?",
+        options: [
+          "Только версию Android",
+          "Стадию запуска и возможную зону неисправности",
+          "Качество дисплея",
+          "IMEI устройства"
+        ],
+        correctAnswers: [1]
+      },
+
+      // Скорость и организация (4)
+      {
+        id: "SP1",
+        category: "speed",
+        type: "assessment",
+        level: "normal",
+        critical: false,
+        topic: "Порядок рабочего места",
+        text: "На столе мастера смешаны винты от 3 аппаратов. Это:",
+        options: [
+          "Нормально, если мастер опытный",
+          "Риск ошибок сборки и потери времени; нужна маркировка и лотки",
+          "Допустимо только вечером",
+          "Полезно для ускорения"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "SP2",
+        category: "speed",
+        type: "situational",
+        level: "important",
+        critical: false,
+        topic: "Приоритет заказов",
+        text: "Как правильно расставлять приоритет ремонта?",
+        options: [
+          "Только по громкости клиента",
+          "По срочности, сложности, обещанным срокам и загрузке мастера",
+          "Всегда по времени поступления, без исключений",
+          "Случайным образом"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "SP3",
+        category: "speed",
+        type: "multiple",
+        level: "normal",
+        critical: false,
+        topic: "Фиксация этапов",
+        text: "Что помогает не терять детали и этапы? (несколько ответов)",
+        options: [
+          "Чек-лист ремонта",
+          "Фото до/после",
+          "Маркировка винтов и модулей",
+          "Память мастера без записей"
+        ],
+        correctAnswers: [0, 1, 2]
+      },
+      {
+        id: "SP4",
+        category: "speed",
+        type: "single",
+        level: "normal",
+        critical: false,
+        topic: "Если не успеваешь",
+        text: "Если понимаешь, что не укладываешься в срок, лучше:",
+        options: [
+          "Молчать до последнего",
+          "Заранее сообщить менеджеру/клиенту и согласовать новый реалистичный срок",
+          "Выдать без проверки",
+          "Скрыть проблему в заказе"
+        ],
+        correctAnswers: [1]
+      },
+
+      // Качество и аккуратность (4)
+      {
+        id: "Q1",
+        category: "quality",
+        type: "critical",
+        level: "critical",
+        critical: true,
+        topic: "Финальная проверка",
+        text: "Перед выдачей после ремонта обязательно:",
+        options: [
+          "Проверить только включение",
+          "Сделать полный финальный тест (камера, связь, звук, заряд, датчики, сеть)",
+          "Выдавать, если нет времени",
+          "Попросить клиента подписать без проверки"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "Q2",
+        category: "quality",
+        type: "single",
+        level: "normal",
+        critical: false,
+        topic: "Чистота сборки",
+        text: "Пыль под стеклом после сборки - это:",
+        options: [
+          "Допустимая мелочь",
+          "Брак качества, нужно устранить до выдачи",
+          "Влияет только на звук",
+          "Нормально для бюджетных моделей"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "Q3",
+        category: "quality",
+        type: "multiple",
+        level: "important",
+        critical: false,
+        topic: "Гарантия и фиксация",
+        text: "Что улучшает контроль качества? (несколько ответов)",
+        options: [
+          "Фото устройства до/после",
+          "Заполнение итогового чек-листа",
+          "Оформление гарантийных условий",
+          "Пропуск тестов при очереди"
+        ],
+        correctAnswers: [0, 1, 2]
+      },
+      {
+        id: "Q4",
+        category: "quality",
+        type: "assessment",
+        level: "critical",
+        critical: true,
+        topic: "Гарантийный повтор",
+        text: "Повторная гарантийная поломка после ремонта - правильный подход:",
+        options: [
+          "Обвинить клиента без проверки",
+          "Принять, диагностировать и устранить причину с фиксацией",
+          "Сразу вернуть деньги без диагностики",
+          "Игнорировать обращение"
+        ],
+        correctAnswers: [1]
+      },
+
+      // Продажи и общение (4)
+      {
+        id: "P1",
+        category: "sales",
+        type: "single",
+        level: "normal",
+        critical: false,
+        topic: "Доп. продажи",
+        text: "Как корректно предложить защитное стекло после замены дисплея?",
+        options: [
+          "Навязать без объяснений",
+          "Кратко объяснить пользу и предложить выбор",
+          "Пугать клиента поломкой",
+          "Вообще не упоминать"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "P2",
+        category: "sales",
+        type: "multiple",
+        level: "normal",
+        critical: false,
+        topic: "Общение с недовольным клиентом",
+        text: "Что помогает в разговоре с недовольным клиентом? (несколько ответов)",
+        options: [
+          "Выслушать и уточнить факты",
+          "Спокойно объяснить варианты решения и сроки",
+          "Перебивать и спорить",
+          "Фиксировать договоренности"
+        ],
+        correctAnswers: [0, 1, 3]
+      },
+      {
+        id: "P3",
+        category: "sales",
+        type: "single",
+        level: "important",
+        critical: false,
+        topic: "Обещания клиенту",
+        text: "Почему нельзя обещать клиенту точный результат до диагностики?",
+        options: [
+          "Это снижает продажи",
+          "Можно создать ложные ожидания и конфликт",
+          "Потому что это запрещено законом везде",
+          "Не влияет на сервис"
+        ],
+        correctAnswers: [1]
+      },
+      {
+        id: "P4",
+        category: "sales",
+        type: "situational",
+        level: "normal",
+        critical: false,
+        topic: "Объяснение гарантии",
+        text: "Клиент спрашивает про гарантию. Лучший ответ:",
+        options: [
+          "Гарантии нет, но надеемся на лучшее",
+          "Четко объяснить сроки, условия и что делать при гарантийном обращении",
+          "Сказать: читайте мелкий текст сами",
+          "Обещать пожизненную гарантию без ограничений"
+        ],
+        correctAnswers: [1]
+      }
+    ];
+
+    const LEVEL_POINTS = { normal: 1, important: 2, critical: 3 };
+
+    function rotateArray(arr, shift) {
+      if (!arr.length) return arr;
+      const normalized = ((shift % arr.length) + arr.length) % arr.length;
+      if (normalized === 0) return arr;
+      return [...arr.slice(normalized), ...arr.slice(0, normalized)];
+    }
+
+    function normalizeQuestions(rawQuestions) {
+      return rawQuestions.map((question, index) => {
+        const answers = question.options.map((text, optionIndex) => ({
+          id: `${question.id}_A${optionIndex}`,
+          text,
+          correct: question.correctAnswers.includes(optionIndex)
+        }));
+
+        // Ручное выравнивание: в исходных данных распределяем позицию правильного ответа.
+        if (question.correctAnswers.length === 1) {
+          const correctIndex = answers.findIndex((a) => a.correct);
+          const targetIndex = index % 4;
+          const shift = correctIndex - targetIndex;
+          const balancedAnswers = rotateArray(answers, shift);
+          return { ...question, answers: balancedAnswers };
+        }
+
+        return { ...question, answers };
+      });
+    }
+
+    const QUESTIONS = normalizeQuestions(QUESTIONS_RAW);
+    const STORAGE_KEY = "masterExamHistoryV1";
+    const CATEGORY_RECOMMENDATIONS = {
+      module: "Повторить порядок проверки дисплея до установки, перенос шлейфов и финальную проверку после сборки.",
+      diagnostics: "Отработать алгоритм диагностики: внешний осмотр, история клиента, питание, АКБ, зарядка, дисплей, плата.",
+      soldering: "Не давать самостоятельную пайку до практической проверки на донорских платах.",
+      electronics: "Усилить базу по цепям питания, мультиметру, ЛБП и поиску короткого замыкания.",
+      speed: "Внедрить чек-листы, маркировку деталей и контроль сроков по каждому заказу.",
+      quality: "Усилить дисциплину финального теста, чистоту сборки и фиксацию результата до выдачи.",
+      sales: "Обучить мастера предлагать защитные стекла, чистку, чехлы и объяснять гарантию клиенту."
+    };
+
+    // ===============================
+    // STATE / currentExam
+    // ===============================
+    const state = {
+      screen: "start", // start | exam | result | history
+      currentExam: null,
+      timerInterval: null,
+      selectedHistoryId: null,
+      adminOpen: false
+    };
+
+    // ===============================
+    // SERVICES / scoring, storage, report
+    // ===============================
+    function getQuestionPoints(question) {
+      return LEVEL_POINTS[question.level] || 1;
+    }
+
+    function getTotalMaxPoints() {
+      return QUESTIONS.reduce((sum, q) => sum + getQuestionPoints(q), 0);
+    }
+
+    function shuffleArray(arr) {
+      const items = [...arr];
+      for (let i = items.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      return items;
+    }
+
+    function shuffleAnswers(question) {
+      return {
+        ...question,
+        answers: shuffleArray(question.answers.map((answer) => ({ ...answer })))
+      };
+    }
+
+    function createExamQuestions() {
+      return QUESTIONS.map((question) => shuffleAnswers(question));
+    }
+
+    function arraysEqualAsSet(a, b) {
+      if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+      const sa = [...a].sort((x, y) => x - y);
+      const sb = [...b].sort((x, y) => x - y);
+      return sa.every((v, i) => v === sb[i]);
+    }
+
+    function evaluateQuestion(question, answer) {
+      const points = getQuestionPoints(question);
+      if (!answer || answer.length === 0) {
+        return { isCorrect: false, earned: 0, points };
+      }
+      const selectedAnswers = answer
+        .map((idx) => question.answers[idx])
+        .filter(Boolean);
+      const correctAnswers = question.answers.filter((a) => a.correct);
+      const selectedCorrectCount = selectedAnswers.filter((a) => a.correct).length;
+      const isCorrect = selectedAnswers.length === correctAnswers.length
+        && selectedCorrectCount === correctAnswers.length;
+      return { isCorrect, earned: isCorrect ? points : 0, points };
+    }
+
+    function calculateCategoryPercent(resultsByCategory) {
+      const weighted = Object.entries(CATEGORIES).reduce((sum, [key, cat]) => {
+        const data = resultsByCategory[key];
+        const percent = data.max > 0 ? (data.earned / data.max) * 100 : 0;
+        return sum + percent * (cat.weight / 100);
+      }, 0);
+      return Math.round(weighted);
+    }
+
+    function getLevelAndDecision(percent) {
+      if (percent <= 40) {
+        return {
+          level: "Не готов",
+          decision: "Не допускать к самостоятельному ремонту",
+          managerRecommendation: "Назначить интенсивное обучение и повторную аттестацию."
+        };
+      }
+      if (percent <= 60) {
+        return {
+          level: "Слабый уровень",
+          decision: "Допускать только простые ремонты под контролем",
+          managerRecommendation: "Назначить наставника и контроль качества каждого заказа."
+        };
+      }
+      if (percent <= 75) {
+        return {
+          level: "Базовый мастер",
+          decision: "Можно давать модульные ремонты, сложные случаи проверять",
+          managerRecommendation: "Допуск к модульным работам, платные ремонты согласовывать со старшим."
+        };
+      }
+      if (percent <= 90) {
+        return {
+          level: "Хороший мастер",
+          decision: "Можно доверять большинство ремонтов",
+          managerRecommendation: "Допуск к основному потоку работ с выборочным контролем."
+        };
+      }
+      return {
+        level: "Сильный мастер",
+        decision: "Можно давать сложные ремонты и обучать других",
+        managerRecommendation: "Рассмотреть роль наставника и работу со сложными кейсами."
+      };
+    }
+
+    function getCategoryStatus(percent) {
+      if (percent >= 85) return { status: "Сильно", className: "status-strong", comment: "Уверенная зона компетенции." };
+      if (percent >= 70) return { status: "Нормально", className: "status-normal", comment: "Рабочий уровень, есть точки для улучшения." };
+      if (percent >= 50) return { status: "Слабо", className: "status-weak", comment: "Нужна доработка по ключевым навыкам." };
+      return { status: "Критично", className: "status-critical", comment: "Риск ошибок, требуется обучение и контроль." };
+    }
+
+    function buildResult(exam) {
+      const byCategory = {};
+      Object.keys(CATEGORIES).forEach((key) => {
+        byCategory[key] = { earned: 0, max: 0, wrongQuestions: [] };
+      });
+
+      const criticalErrors = [];
+      let totalEarned = 0;
+      let totalMax = 0;
+
+      const mistakes = [];
+      exam.questions.forEach((q) => {
+        const answer = exam.answers[q.id] || [];
+        const evalRes = evaluateQuestion(q, answer);
+        totalEarned += evalRes.earned;
+        totalMax += evalRes.points;
+        byCategory[q.category].earned += evalRes.earned;
+        byCategory[q.category].max += evalRes.points;
+        if (!evalRes.isCorrect) {
+          byCategory[q.category].wrongQuestions.push(q);
+          const selectedTexts = answer.map((idx) => q.answers[idx]?.text).filter(Boolean);
+          const correctTexts = q.answers.filter((a) => a.correct).map((a) => a.text);
+          mistakes.push({
+            questionId: q.id,
+            question: q.text,
+            masterAnswer: selectedTexts.length ? selectedTexts : ["Нет ответа"],
+            correctAnswer: correctTexts
+          });
+          if (q.critical) {
+            criticalErrors.push(q);
+          }
+        }
+      });
+
+      const weightedPercent = calculateCategoryPercent(byCategory);
+      const levelInfo = getLevelAndDecision(weightedPercent);
+
+      const categoryRows = Object.entries(CATEGORIES).map(([key, cfg]) => {
+        const row = byCategory[key];
+        const percent = row.max > 0 ? Math.round((row.earned / row.max) * 100) : 0;
+        return {
+          key,
+          name: cfg.name,
+          percent,
+          ...getCategoryStatus(percent)
+        };
+      });
+
+      const strongSides = categoryRows.filter((c) => c.percent >= 80).map((c) => c.name);
+      const weakSides = categoryRows.filter((c) => c.percent < 70).map((c) => c.name);
+
+      const recommendations = [];
+      categoryRows.forEach((row) => {
+        if ((row.key === "sales" && row.percent < 60) || (row.key !== "sales" && row.percent < 70)) {
+          recommendations.push(CATEGORY_RECOMMENDATIONS[row.key]);
+        }
+      });
+      if (criticalErrors.length > 0) {
+        recommendations.push("Перед самостоятельной работой провести повторный инструктаж по критическим ошибкам.");
+      }
+      if (recommendations.length === 0) {
+        recommendations.push("Поддерживать текущий уровень и раз в месяц проходить внутренний контроль качества.");
+      }
+
+      return {
+        totalEarned,
+        totalMax,
+        weightedPercent,
+        levelInfo,
+        byCategory,
+        categoryRows,
+        criticalErrors,
+        mistakes,
+        strongSides,
+        weakSides,
+        recommendations
+      };
+    }
+
+    function formatDuration(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+    }
+
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveHistory(history) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    }
+
+    function addHistoryRecord(record) {
+      const history = loadHistory();
+      history.unshift(record);
+      saveHistory(history.slice(0, 100));
+    }
+
+    function deleteHistoryRecord(id) {
+      const history = loadHistory().filter((item) => item.id !== id);
+      saveHistory(history);
+    }
+
+    function buildWhatsAppReport(result, exam) {
+      const lines = [
+        "Экзамен мастера",
+        "",
+        `Мастер: ${exam.masterName}`,
+        `Дата: ${exam.examDate}`,
+        `Стаж: ${exam.experience || "-"}`,
+        "",
+        `Итог: ${result.weightedPercent}%`,
+        `Уровень: ${result.levelInfo.level}`,
+        `Решение: ${result.levelInfo.decision}`,
+        "",
+        "Категории:",
+        ...result.categoryRows.map((c) => `${c.name}: ${c.percent}%`),
+        "",
+        "Критические ошибки:",
+        result.criticalErrors.length > 0 ? result.criticalErrors.map((q) => `- ${q.text}`) : ["- Нет"],
+        "",
+        "Слабые места:",
+        result.weakSides.length > 0 ? result.weakSides.map((s) => `- ${s}`) : ["- Нет выраженных слабых зон"],
+        "",
+        "Что учить:",
+        ...result.recommendations.map((r) => `- ${r}`),
+        "",
+        "Решение руководителя:",
+        result.levelInfo.managerRecommendation
+      ];
+      return lines.flat().join("\n");
+    }
+
+    // ===============================
+    // UI / render functions
+    // ===============================
+    const app = document.getElementById("app");
+
+    function render() {
+      if (state.screen === "start") {
+        renderStartScreen();
+      } else if (state.screen === "exam") {
+        renderExamScreen();
+      } else if (state.screen === "result") {
+        renderResultScreen();
+      } else {
+        renderHistoryScreen();
+      }
+    }
+
+    function renderStartScreen() {
+      const maxPoints = getTotalMaxPoints();
+      app.innerHTML = `
+        <div class="main-grid">
+          <section class="card">
+            <h1>Экзамен мастера</h1>
+            <p class="subtitle">Проверка знаний по ремонту телефонов</p>
+            <form id="startForm">
+              <div class="form-grid">
+                <div>
+                  <label class="label" for="masterName">Имя мастера</label>
+                  <input class="input" id="masterName" required placeholder="Например: Иван Петров">
+                </div>
+                <div>
+                  <label class="label" for="examDate">Дата экзамена</label>
+                  <input class="input" id="examDate" type="date" required>
+                </div>
+                <div>
+                  <label class="label" for="experience">Стаж работы</label>
+                  <input class="input" id="experience" placeholder="Например: 2 года">
+                </div>
+                <div>
+                  <label class="label" for="reviewer">Комментарий проверяющего</label>
+                  <input class="input" id="reviewer" placeholder="Кратко: на что обратить внимание">
+                </div>
+                <div class="full-width">
+                  <label class="label" for="note">Дополнительный комментарий</label>
+                  <textarea class="textarea" id="note" placeholder="Любые заметки перед экзаменом"></textarea>
+                </div>
+              </div>
+              <div class="stats">
+                <span class="stat-pill">Вопросов: ${QUESTIONS.length}</span>
+                <span class="stat-pill">Макс. балл: ${maxPoints}</span>
+                <span class="stat-pill">Время: ~20-30 минут</span>
+              </div>
+              <div class="buttons-row">
+                <button class="btn btn-primary" type="submit">Начать экзамен</button>
+                <button class="btn btn-secondary" type="button" id="openHistoryBtn">История</button>
+                <button class="btn btn-secondary" type="button" id="toggleAdminBtn">
+                  ${state.adminOpen ? "Скрыть" : "Показать"} настройку вопросов
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside>
+            <div class="card side-card">
+              <h3 class="side-title">Категории и вес</h3>
+              <div class="mini-list">
+                ${Object.values(CATEGORIES).map((c) => `
+                  <div class="mini-item">
+                    <span>${c.name}</span><strong>${c.weight}%</strong>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+            ${state.adminOpen ? renderAdminPanel() : ""}
+          </aside>
+        </div>
+      `;
+
+      const today = new Date();
+      const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+      document.getElementById("examDate").value = dateStr;
+    }
+
+    function renderAdminPanel() {
+      return `
+        <div class="card side-card">
+          <h3 class="side-title">Настройка вопросов</h3>
+          <p class="muted">Вопросы хранятся в массиве <code>QUESTIONS</code> в этом <code>index.html</code>.</p>
+          <div class="admin-list">
+            ${QUESTIONS.map((q, idx) => `
+              <div class="admin-item">
+                <div><strong>${idx + 1}. ${q.id}</strong> • ${CATEGORIES[q.category].name}</div>
+                <div>${q.text}</div>
+                <div class="muted">
+                  Тип: ${q.type} | Баллы: ${getQuestionPoints(q)} | Критический: ${q.critical ? "Да" : "Нет"}
+                </div>
+                <div class="muted">Правильный ответ: ${q.answers.filter((a) => a.correct).map((a) => a.text).join("; ")}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderExamScreen() {
+      const exam = state.currentExam;
+      const q = exam.questions[exam.currentIndex];
+      const answer = exam.answers[q.id] || [];
+      const isMulti = q.type === "multiple";
+      const answeredCount = Object.values(exam.answers).filter((arr) => arr && arr.length > 0).length;
+      const progressPercent = Math.round(((exam.currentIndex + 1) / exam.questions.length) * 100);
+      const fillPercent = Math.round((answeredCount / exam.questions.length) * 100);
+
+      app.innerHTML = `
+        <div class="main-grid">
+          <section class="card question-card">
+            <h2>Вопрос ${exam.currentIndex + 1} из ${exam.questions.length}</h2>
+            <div class="question-meta">
+              <span class="badge badge-blue">${CATEGORIES[q.category].name}</span>
+              <span class="badge badge-green">${getQuestionPoints(q)} балл(а)</span>
+              ${q.critical ? '<span class="badge badge-red">Критический вопрос</span>' : ""}
+            </div>
+            <div class="progress-wrap">
+              <div class="helper-text">Прогресс экзамена: ${progressPercent}%</div>
+              <div class="progress-track"><div class="progress-value" style="width:${progressPercent}%"></div></div>
+            </div>
+            <p class="question-text">${q.text}</p>
+            <p class="helper-text">${isMulti ? "Выберите несколько вариантов." : "Выберите один вариант."}</p>
+            <div class="options">
+              ${q.answers.map((opt, idx) => `
+                <label class="option ${answer.includes(idx) ? "selected" : ""}" data-idx="${idx}">
+                  <input type="${isMulti ? "checkbox" : "radio"}" name="answerOption"
+                    ${answer.includes(idx) ? "checked" : ""}>
+                  <span>${opt.text}</span>
+                </label>
+              `).join("")}
+            </div>
+
+            <div class="sticky-actions">
+              <button class="btn btn-secondary" id="backBtn" ${exam.currentIndex === 0 ? "disabled" : ""}>Назад</button>
+              <button class="btn btn-primary" id="nextBtn" ${exam.currentIndex === exam.questions.length - 1 ? "disabled" : ""}>Далее</button>
+              <button class="btn btn-success" id="finishBtn">Завершить</button>
+            </div>
+          </section>
+          <aside>
+            <div class="card side-card">
+              <h3 class="side-title">Мастер</h3>
+              <div class="mini-list">
+                <div class="mini-item"><span>Имя</span><strong>${exam.masterName}</strong></div>
+                <div class="mini-item"><span>Дата</span><strong>${exam.examDate}</strong></div>
+                <div class="mini-item"><span>Стаж</span><strong>${exam.experience || "-"}</strong></div>
+                <div class="mini-item"><span>Таймер</span><strong id="timerValue">${formatDuration(exam.elapsedSec)}</strong></div>
+              </div>
+            </div>
+            <div class="card side-card">
+              <h3 class="side-title">Заполненность</h3>
+              <div class="helper-text">Отвечено: ${answeredCount} из ${exam.questions.length}</div>
+              <div class="progress-track"><div class="progress-value" style="width:${fillPercent}%"></div></div>
+              <div class="mini-list">
+                ${Object.entries(CATEGORIES).map(([key, c]) => {
+                  const total = exam.questions.filter((qItem) => qItem.category === key).length;
+                  const answered = exam.questions.filter((qItem) => qItem.category === key && (exam.answers[qItem.id] || []).length > 0).length;
+                  return `<div class="mini-item"><span>${c.name}</span><strong>${answered}/${total}</strong></div>`;
+                }).join("")}
+              </div>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderResultScreen() {
+      const exam = state.currentExam;
+      const result = exam.result;
+      const reportText = buildWhatsAppReport(result, exam);
+      const criticalHtml = result.criticalErrors.length
+        ? `<ul class="list">${result.criticalErrors.map((q) => `<li>${q.text}</li>`).join("")}</ul>`
+        : "<p class='muted'>Критических ошибок нет.</p>";
+
+      app.innerHTML = `
+        <section class="card">
+          <h1>Результат экзамена</h1>
+          <p class="subtitle">Итоговая оценка и решение по допуску мастера</p>
+          <div class="result-head">
+            <div class="metric"><div class="k">Мастер</div><div class="v">${exam.masterName}</div></div>
+            <div class="metric"><div class="k">Дата</div><div class="v">${exam.examDate}</div></div>
+            <div class="metric"><div class="k">Баллы</div><div class="v">${result.totalEarned}/${result.totalMax}</div></div>
+            <div class="metric"><div class="k">Процент</div><div class="v">${result.weightedPercent}%</div></div>
+          </div>
+
+          <div class="good-box">
+            <strong>Уровень:</strong> ${result.levelInfo.level}<br>
+            <strong>Решение:</strong> ${result.levelInfo.decision}
+          </div>
+
+          <h3 class="section-title" style="margin-top:16px;">Результат по категориям</h3>
+          <div class="category-results">
+            ${result.categoryRows.map((row) => `
+              <div class="category-row">
+                <strong>${row.name}</strong>
+                <div>${row.percent}%</div>
+                <div class="${row.className}"><strong>${row.status}</strong></div>
+                <div class="muted">${row.comment}</div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="warning-box">
+            <strong>Ошибки в критических вопросах</strong>
+            ${criticalHtml}
+          </div>
+
+          <div class="card" style="margin-top:14px; box-shadow:none; border:1px solid #e5ecff; background:#fbfdff;">
+            <h3 class="section-title">Ошибки мастера</h3>
+            ${
+              result.mistakes.length
+                ? `<ul class="list">${result.mistakes.map((m) => `<li><strong>${m.question}</strong><br>Ответ мастера: ${m.masterAnswer.join(", ")}<br>Правильный ответ: ${m.correctAnswer.join(", ")}</li>`).join("")}</ul>`
+                : "<p class='muted'>Ошибок нет.</p>"
+            }
+          </div>
+
+          <div class="good-box">
+            <strong>Сильные стороны:</strong>
+            ${result.strongSides.length ? result.strongSides.join(", ") : "Пока нет ярко выраженных сильных сторон"}
+            <br><strong>Слабые стороны:</strong>
+            ${result.weakSides.length ? result.weakSides.join(", ") : "Слабые зоны не выявлены"}
+          </div>
+
+          <div class="card" style="margin-top:14px; background:#f9fbff; border:1px solid #e3ebff; box-shadow:none;">
+            <h3 class="section-title">Что учить дальше</h3>
+            <ul class="list">${result.recommendations.map((r) => `<li>${r}</li>`).join("")}</ul>
+            <p style="margin-top:10px;"><strong>Рекомендация руководителю:</strong> ${result.levelInfo.managerRecommendation}</p>
+          </div>
+
+          <div class="buttons-row" style="margin-top:14px;">
+            <button class="btn btn-primary" id="copyReportBtn">Скопировать отчет</button>
+            <button class="btn btn-secondary" id="historyBtn">История</button>
+            <button class="btn btn-success" id="newExamBtn">Новый экзамен</button>
+          </div>
+
+          <textarea class="textarea hidden" id="reportTextArea">${reportText}</textarea>
+        </section>
+      `;
+    }
+
+    function renderHistoryScreen() {
+      const history = loadHistory();
+      const selected = history.find((r) => r.id === state.selectedHistoryId);
+
+      app.innerHTML = `
+        <section class="card">
+          <h1>История экзаменов</h1>
+          <p class="subtitle">Результаты сохраняются локально в браузере.</p>
+          <div class="buttons-row" style="margin-bottom:10px;">
+            <button class="btn btn-secondary" id="backToStartBtn">На старт</button>
+            <button class="btn btn-success" id="newExamFromHistoryBtn">Новый экзамен</button>
+          </div>
+
+          ${history.length === 0 ? "<p class='muted'>История пока пустая.</p>" : `
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Мастер</th>
+                  <th>Процент</th>
+                  <th>Уровень</th>
+                  <th>Решение</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${history.map((item) => `
+                  <tr>
+                    <td>${item.examDate}</td>
+                    <td>${item.masterName}</td>
+                    <td>${item.weightedPercent}%</td>
+                    <td>${item.level}</td>
+                    <td>${item.decision}</td>
+                    <td>
+                      <button class="btn btn-secondary open-history-btn" data-id="${item.id}" style="padding:8px 10px; min-height:auto;">Открыть</button>
+                      <button class="btn btn-danger delete-history-btn" data-id="${item.id}" style="padding:8px 10px; min-height:auto;">Удалить</button>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `}
+
+          ${selected ? `
+            <div class="card" style="margin-top:12px; box-shadow:none; border:1px solid #e4ebfd; background:#fbfcff;">
+              <h3 class="section-title">Просмотр результата: ${selected.masterName}</h3>
+              <p><strong>Дата:</strong> ${selected.examDate} | <strong>Стаж:</strong> ${selected.experience || "-"}</p>
+              <p><strong>Итог:</strong> ${selected.weightedPercent}% | <strong>Уровень:</strong> ${selected.level}</p>
+              <p><strong>Решение:</strong> ${selected.decision}</p>
+              <p><strong>Критические ошибки:</strong> ${selected.criticalErrors && selected.criticalErrors.length ? selected.criticalErrors.join("; ") : "Нет"}</p>
+              <p><strong>Слабые места:</strong> ${selected.weakSides && selected.weakSides.length ? selected.weakSides.join(", ") : "Нет"}</p>
+              ${
+                selected.examFlow && selected.examFlow.length
+                  ? `<div style="margin-top:8px;"><strong>Ошибки по ответам:</strong><ul class="list">${
+                      selected.examFlow
+                        .filter((item) => {
+                          const selectedAnswers = item.answers.filter((a) => a.selected);
+                          const correctAnswers = item.answers.filter((a) => a.correct);
+                          return !(selectedAnswers.length === correctAnswers.length && selectedAnswers.every((a) => a.correct));
+                        })
+                        .slice(0, 8)
+                        .map((item) => {
+                          const selectedText = item.answers.filter((a) => a.selected).map((a) => a.text).join(", ") || "Нет ответа";
+                          const correctText = item.answers.filter((a) => a.correct).map((a) => a.text).join(", ");
+                          return `<li><strong>${item.question}</strong><br>Ответ мастера: ${selectedText}<br>Правильный ответ: ${correctText}</li>`;
+                        })
+                        .join("")
+                    }</ul></div>`
+                  : ""
+              }
+            </div>
+          ` : ""}
+        </section>
+      `;
+    }
+
+    // ===============================
+    // EVENTS / click handlers
+    // ===============================
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      if (target.id === "openHistoryBtn") {
+        state.screen = "history";
+        state.selectedHistoryId = null;
+        stopTimer();
+        render();
+      }
+
+      if (target.id === "toggleAdminBtn") {
+        state.adminOpen = !state.adminOpen;
+        render();
+      }
+
+      if (state.screen === "exam" && target.closest(".option")) {
+        const label = target.closest(".option");
+        const idx = Number(label.dataset.idx);
+        onAnswerSelect(idx);
+      }
+
+      if (target.id === "backBtn") {
+        state.currentExam.currentIndex = Math.max(0, state.currentExam.currentIndex - 1);
+        render();
+      }
+
+      if (target.id === "nextBtn") {
+        state.currentExam.currentIndex = Math.min(state.currentExam.questions.length - 1, state.currentExam.currentIndex + 1);
+        render();
+      }
+
+      if (target.id === "finishBtn") {
+        finishExam();
+      }
+
+      if (target.id === "copyReportBtn") {
+        copyReport();
+      }
+
+      if (target.id === "historyBtn") {
+        state.screen = "history";
+        state.selectedHistoryId = null;
+        render();
+      }
+
+      if (target.id === "newExamBtn" || target.id === "newExamFromHistoryBtn") {
+        startNewExamFlow();
+      }
+
+      if (target.id === "backToStartBtn") {
+        state.screen = "start";
+        state.selectedHistoryId = null;
+        render();
+      }
+
+      if (target.classList.contains("open-history-btn")) {
+        state.selectedHistoryId = target.dataset.id;
+        render();
+      }
+
+      if (target.classList.contains("delete-history-btn")) {
+        const id = target.dataset.id;
+        deleteHistoryRecord(id);
+        if (state.selectedHistoryId === id) state.selectedHistoryId = null;
+        render();
+      }
+    });
+
+    document.addEventListener("submit", (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement) || form.id !== "startForm") return;
+      event.preventDefault();
+
+      const masterName = document.getElementById("masterName").value.trim();
+      const examDate = document.getElementById("examDate").value;
+      const experience = document.getElementById("experience").value.trim();
+      const reviewer = document.getElementById("reviewer").value.trim();
+      const note = document.getElementById("note").value.trim();
+
+      if (!masterName || !examDate) {
+        alert("Заполните имя мастера и дату экзамена.");
+        return;
+      }
+
+      state.currentExam = {
+        id: `exam_${Date.now()}`,
+        masterName,
+        examDate,
+        experience,
+        reviewer,
+        note,
+        startedAt: Date.now(),
+        elapsedSec: 0,
+        currentIndex: 0,
+        questions: createExamQuestions(),
+        answers: {},
+        result: null
+      };
+      state.screen = "exam";
+      startTimer();
+      render();
+    });
+
+    function onAnswerSelect(optionIndex) {
+      const exam = state.currentExam;
+      const q = exam.questions[exam.currentIndex];
+      const current = exam.answers[q.id] ? [...exam.answers[q.id]] : [];
+
+      if (q.type === "multiple") {
+        const exists = current.includes(optionIndex);
+        exam.answers[q.id] = exists
+          ? current.filter((v) => v !== optionIndex)
+          : [...current, optionIndex];
+      } else {
+        exam.answers[q.id] = [optionIndex];
+      }
+
+      render();
+    }
+
+    function startTimer() {
+      stopTimer();
+      state.timerInterval = setInterval(() => {
+        if (!state.currentExam || state.screen !== "exam") return;
+        state.currentExam.elapsedSec += 1;
+        const timerEl = document.getElementById("timerValue");
+        if (timerEl) timerEl.textContent = formatDuration(state.currentExam.elapsedSec);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.timerInterval = null;
+      }
+    }
+
+    function finishExam() {
+      const exam = state.currentExam;
+      if (!exam) return;
+
+      const answeredCount = Object.values(exam.answers).filter((arr) => arr && arr.length > 0).length;
+      const shouldFinish = answeredCount === exam.questions.length || confirm(
+        `Отвечено ${answeredCount} из ${exam.questions.length}. Завершить экзамен?`
+      );
+      if (!shouldFinish) return;
+
+      stopTimer();
+      const result = buildResult(exam);
+      exam.result = result;
+      exam.finishedAt = Date.now();
+
+      addHistoryRecord({
+        id: exam.id,
+        examDate: exam.examDate,
+        masterName: exam.masterName,
+        experience: exam.experience,
+        weightedPercent: result.weightedPercent,
+        level: result.levelInfo.level,
+        decision: result.levelInfo.decision,
+        criticalErrors: result.criticalErrors.map((q) => q.text),
+        weakSides: result.weakSides,
+        recommendations: result.recommendations,
+        examFlow: exam.questions.map((q) => {
+          const selectedIndexes = exam.answers[q.id] || [];
+          return {
+            id: q.id,
+            category: q.category,
+            question: q.text,
+            answers: q.answers.map((a, idx) => ({
+              text: a.text,
+              correct: a.correct,
+              selected: selectedIndexes.includes(idx)
+            }))
+          };
+        })
+      });
+
+      state.screen = "result";
+      render();
+    }
+
+    async function copyReport() {
+      const textarea = document.getElementById("reportTextArea");
+      if (!textarea) return;
+      textarea.classList.remove("hidden");
+      textarea.select();
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        alert("Отчет скопирован. Можно вставить в WhatsApp.");
+      } catch (error) {
+        try {
+          const ok = document.execCommand("copy");
+          alert(ok ? "Отчет скопирован." : "Не удалось скопировать автоматически. Скопируйте текст вручную.");
+        } catch (_) {
+          alert("Не удалось скопировать автоматически. Скопируйте текст вручную.");
+        }
+      } finally {
+        textarea.classList.add("hidden");
+      }
+    }
+
+    function startNewExamFlow() {
+      stopTimer();
+      state.currentExam = null;
+      state.screen = "start";
+      state.selectedHistoryId = null;
+      render();
+    }
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
