@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0f1419">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Учёт обращений без контакта</title>
+  <title>Учёт обращений</title>
   <style>
     :root {
       --bg: #0f1419;
@@ -17,8 +17,7 @@
       --accent: #3b82f6;
       --accent-hover: #2563eb;
       --danger: #ef4444;
-      --warning: #f59e0b;
-      --success: #22c55e;
+      --wa: #25d366;
       --radius: 10px;
       --font: "Segoe UI", system-ui, sans-serif;
     }
@@ -34,89 +33,29 @@
     }
 
     .app {
-      max-width: 1100px;
+      max-width: 480px;
       margin: 0 auto;
-      padding: 24px 20px 48px;
+      padding: 20px 16px 110px;
+      padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
     }
 
-    header {
-      margin-bottom: 28px;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    header p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 4px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-    }
-
-    .stat-card.highlight {
-      border-color: var(--warning);
-      background: linear-gradient(135deg, #1a2332 0%, #2a2218 100%);
-    }
-
-    .stat-card.danger {
-      border-color: var(--danger);
-      background: linear-gradient(135deg, #1a2332 0%, #2a1818 100%);
-    }
-
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .stat-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-top: 4px;
-    }
-
-    .stat-card.highlight .stat-value { color: var(--warning); }
-    .stat-card.danger .stat-value { color: var(--danger); }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .grid-2 { grid-template-columns: 1fr; }
-    }
+    header { margin-bottom: 20px; }
+    header h1 { font-size: 1.35rem; font-weight: 600; }
+    header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
 
     .panel {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 16px;
+      margin-bottom: 16px;
     }
 
     .panel h2 {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
     }
 
@@ -129,282 +68,119 @@
 
     input[type="text"],
     input[type="date"],
-    select,
-    textarea {
+    select {
       width: 100%;
-      padding: 10px 12px;
+      padding: 14px 12px;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text);
       font: inherit;
-      margin-bottom: 14px;
+      font-size: 16px;
+      margin-bottom: 12px;
     }
 
-    textarea {
-      min-height: 72px;
-      resize: vertical;
-    }
-
-    input:focus, select:focus, textarea:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: var(--accent);
     }
 
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .toggle-group {
-      display: flex;
+    .chip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
 
-    .toggle-btn {
-      flex: 1;
-      min-width: 100px;
-      padding: 10px 14px;
+    .chip {
+      padding: 12px 8px;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
-      color: var(--muted);
+      color: var(--text);
       font: inherit;
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.15s;
+      min-height: 44px;
     }
 
-    .toggle-btn:hover { border-color: var(--accent); color: var(--text); }
-
-    .toggle-btn.active-yes {
-      background: rgba(34, 197, 94, 0.15);
-      border-color: var(--success);
-      color: var(--success);
-    }
-
-    .toggle-btn.active-no {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: var(--danger);
-      color: var(--danger);
-    }
+    .chip:active { border-color: var(--accent); background: rgba(59, 130, 246, 0.15); }
 
     .btn {
-      padding: 10px 18px;
+      padding: 14px 18px;
       border: none;
       border-radius: 8px;
       font: inherit;
+      font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
       width: 100%;
-      margin-top: 4px;
+      min-height: 48px;
     }
 
-    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:active { background: var(--accent-hover); }
 
+    .btn-wa { background: var(--wa); color: #fff; }
     .btn-secondary {
       background: var(--surface2);
       color: var(--text);
       border: 1px solid var(--border);
     }
 
-    .btn-secondary:hover { border-color: var(--accent); }
-
     .btn-danger {
       background: transparent;
       color: var(--danger);
       border: 1px solid var(--danger);
-      padding: 6px 10px;
+      padding: 8px 12px;
       font-size: 0.8rem;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-      align-items: center;
-    }
-
-    .toolbar select, .toolbar input[type="date"] {
-      margin-bottom: 0;
       width: auto;
-      min-width: 140px;
+      min-height: auto;
     }
 
-    .reasons-chart {
-      margin-top: 8px;
+    .report-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .reason-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
-    }
-
-    .reason-name {
-      flex: 0 0 140px;
-      color: var(--muted);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .reason-bar-wrap {
-      flex: 1;
-      height: 8px;
+    .report-preview {
+      padding: 12px;
       background: var(--surface2);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .reason-bar {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 4px;
-      min-width: 2px;
-    }
-
-    .reason-count {
-      flex: 0 0 32px;
-      text-align: right;
-      font-weight: 600;
-    }
-
-    .records-list {
-      max-height: 420px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+      max-height: 200px;
       overflow-y: auto;
     }
 
     .record-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
       padding: 12px;
       background: var(--surface2);
       border-radius: 8px;
       margin-bottom: 8px;
-      border-left: 3px solid var(--border);
-      font-size: 0.85rem;
-    }
-
-    .record-item.no-phone { border-left-color: var(--warning); }
-    .record-item.not-served { border-left-color: var(--danger); }
-
-    .record-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      margin-bottom: 6px;
-    }
-
-    .record-reason {
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .tag {
-      font-size: 0.7rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: var(--bg);
-    }
-
-    .tag.bad { color: var(--danger); }
-    .tag.warn { color: var(--warning); }
-    .tag.ok { color: var(--success); }
-
-    .empty {
-      color: var(--muted);
-      text-align: center;
-      padding: 24px;
       font-size: 0.9rem;
     }
 
-    .period-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
+    .record-item strong { color: var(--accent); font-weight: 500; }
 
-    .period-tab {
-      padding: 6px 12px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
+    .empty { color: var(--muted); text-align: center; padding: 20px; font-size: 0.9rem; }
 
-    .period-tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      padding: 12px 20px;
-      background: var(--success);
-      color: white;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.25s;
-      pointer-events: none;
-      z-index: 100;
-    }
-
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    .manager-new { display: none; margin-top: 8px; }
+    .manager-new { display: none; margin-top: -4px; margin-bottom: 12px; }
     .manager-new.visible { display: block; }
 
-    .record-manager {
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
+    details { margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+    details summary { cursor: pointer; padding: 8px 0; }
 
-    .managers-setup {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .managers-setup summary {
-      font-size: 0.8rem;
-      color: var(--muted);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .managers-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
+    .managers-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
 
     .manager-chip {
       display: inline-flex;
@@ -414,6 +190,7 @@
       background: var(--surface2);
       border-radius: 6px;
       font-size: 0.8rem;
+      color: var(--text);
     }
 
     .manager-chip button {
@@ -421,461 +198,126 @@
       border: none;
       color: var(--danger);
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.1rem;
       line-height: 1;
       padding: 0;
     }
 
-    .add-manager-row {
+    .add-row { display: flex; gap: 8px; }
+    .add-row input { margin-bottom: 0; flex: 1; }
+    .add-row .btn { width: auto; white-space: nowrap; padding: 10px 14px; min-height: 44px; }
+
+    .panel-foot {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .add-manager-row input { margin-bottom: 0; flex: 1; }
-    .add-manager-row .btn { width: auto; white-space: nowrap; }
-
-    .form-step {
-      margin-bottom: 18px;
-    }
-
-    .form-step > label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 10px;
-    }
-
-    .chip-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .chip {
-      padding: 12px 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font: inherit;
-      font-size: 0.85rem;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s;
-      min-height: 44px;
-    }
-
-    .chip:hover { border-color: var(--accent); }
-
-    .chip.active {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--accent);
-      color: #fff;
-    }
-
-    .outcome-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .outcome-btn {
-      padding: 14px 16px;
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font: inherit;
-      font-size: 1rem;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s;
-      min-height: 52px;
-    }
-
-    .outcome-btn small {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .outcome-btn.active {
-      border-color: var(--accent);
-      background: rgba(59, 130, 246, 0.15);
-    }
-
-    .outcome-btn.active[data-outcome="lost"] {
-      border-color: var(--danger);
-      background: rgba(239, 68, 68, 0.12);
-    }
-
-    .outcome-btn.active[data-outcome="sale"] {
-      border-color: var(--success);
-      background: rgba(34, 197, 94, 0.12);
-    }
-
-    .check-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      font-size: 0.9rem;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .check-row input {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--accent);
-    }
-
-    #comment { margin-bottom: 10px; }
-
-    .date-row {
-      display: none;
-      margin-bottom: 14px;
-    }
-
-    .date-row.visible { display: block; }
-
-    .link-btn {
-      background: none;
-      border: none;
-      color: var(--accent);
-      font: inherit;
-      font-size: 0.85rem;
-      cursor: pointer;
-      padding: 0;
-      margin-bottom: 14px;
-      text-decoration: underline;
-    }
-
-    .reason-custom-input {
-      display: none;
+      justify-content: flex-end;
       margin-top: 8px;
-      margin-bottom: 0;
     }
 
-    .reason-custom-input.visible { display: block; }
-
-    .report-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 20px;
+    .sticky-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      padding: 10px 16px;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(transparent, var(--bg) 15%, var(--bg));
+      border-top: 1px solid var(--border);
+      max-width: 480px;
+      margin: 0 auto;
     }
 
-    .report-panel h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .report-date-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .report-date-row input { margin-bottom: 0; flex: 1; }
-
-    .report-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .btn-whatsapp {
-      background: #25d366;
-      color: #fff;
-      width: 100%;
-      min-height: 48px;
-      font-size: 1rem;
-    }
-
-    .btn-whatsapp:hover { background: #1da851; }
-
-    .btn-copy {
-      width: 100%;
-      min-height: 48px;
-      font-size: 1rem;
-    }
-
-    .report-preview {
-      margin-top: 12px;
+    .toast {
+      position: fixed;
+      bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+      left: 16px;
+      right: 16px;
+      max-width: 448px;
+      margin: 0 auto;
       padding: 12px;
-      background: var(--surface2);
+      background: #22c55e;
+      color: #fff;
       border-radius: 8px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 160px;
-      overflow-y: auto;
-      line-height: 1.45;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+      z-index: 100;
     }
 
-    .sticky-report {
-      display: none;
-    }
-
-    @media (max-width: 768px) {
-      .app {
-        padding: 16px 12px 120px;
-        padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
-      }
-
-      header h1 { font-size: 1.25rem; }
-      header p { font-size: 0.85rem; }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-
-      .stat-card { padding: 12px; }
-      .stat-value { font-size: 1.5rem; }
-      .stat-label { font-size: 0.65rem; }
-
-      .period-tabs {
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 4px;
-        margin-bottom: 12px;
-      }
-
-      .period-tab {
-        flex: 1 0 auto;
-        min-width: 72px;
-        padding: 12px 14px;
-        font-size: 0.9rem;
-        min-height: 44px;
-      }
-
-      .panel { padding: 16px; }
-
-      input[type="text"],
-      input[type="date"],
-      select,
-      textarea {
-        font-size: 16px;
-        padding: 14px 12px;
-        margin-bottom: 16px;
-      }
-
-      .toggle-btn {
-        min-height: 48px;
-        font-size: 1rem;
-        padding: 12px;
-      }
-
-      .btn, .btn-primary, .btn-secondary {
-        min-height: 48px;
-        font-size: 1rem;
-      }
-
-      .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .toolbar select,
-      .toolbar .btn {
-        width: 100%;
-        min-width: 0;
-        min-height: 48px;
-      }
-
-      .records-list {
-        max-height: none;
-      }
-
-      .record-meta .btn-danger {
-        min-height: 40px;
-        padding: 8px 14px;
-        font-size: 0.85rem;
-      }
-
-      .reason-name { flex: 0 0 100px; font-size: 0.8rem; }
-
-      .report-panel {
-        margin-bottom: 16px;
-        padding: 14px;
-      }
-
-      .report-preview { max-height: 120px; font-size: 0.75rem; }
-
-      .report-panel .report-actions { display: none; }
-
-      .sticky-report {
-        display: block;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 50;
-        padding: 10px 12px;
-        padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-        background: linear-gradient(transparent, var(--bg) 12%, var(--bg));
-        border-top: 1px solid var(--border);
-      }
-
-      .sticky-report .report-actions {
-        grid-template-columns: 1.2fr 1fr;
-      }
-
-      .toast {
-        left: 12px;
-        right: 12px;
-        bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-        text-align: center;
-      }
-    }
-
-    @media (min-width: 769px) {
-      .sticky-report { display: none !important; }
-    }
+    .toast.show { opacity: 1; }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
       <h1>Учёт обращений</h1>
-      <p>Быстрая запись: причина → итог → сохранить</p>
+      <p>Запись → отчёт в WhatsApp</p>
     </header>
 
-    <div class="period-tabs" id="periodTabs">
-      <button type="button" class="period-tab active" data-period="today">Сегодня</button>
-      <button type="button" class="period-tab" data-period="week">Неделя</button>
-      <button type="button" class="period-tab" data-period="month">Месяц</button>
-      <button type="button" class="period-tab" data-period="all">Всё время</button>
-    </div>
+    <section class="panel">
+      <h2>Новая запись</h2>
+      <form id="recordForm">
+        <label for="managerSelect">Менеджер</label>
+        <select id="managerSelect" required></select>
+        <div class="manager-new" id="managerNewWrap">
+          <input type="text" id="managerNew" placeholder="Имя менеджера">
+        </div>
 
-    <section class="stats" id="stats"></section>
+        <label for="whyText">Почему ушли / что спрашивали</label>
+        <input type="text" id="whyText" placeholder="Например: не устроила цена" required>
 
-    <section class="report-panel">
-      <h2>Отчёт за день (главное — потери)</h2>
-      <div class="report-date-row">
-        <label for="reportDate" style="margin:0;white-space:nowrap">Дата</label>
-        <input type="date" id="reportDate">
-      </div>
-      <div class="report-actions">
-        <button type="button" class="btn btn-whatsapp" id="whatsappBtn">Отправить в WhatsApp</button>
-        <button type="button" class="btn btn-secondary btn-copy" id="copyReportBtn">Копировать отчёт</button>
-      </div>
-      <pre class="report-preview" id="reportPreview"></pre>
+        <div class="chip-grid" id="reasonChips">
+          <button type="button" class="chip" data-text="Не устроила цена">Дорого</button>
+          <button type="button" class="chip" data-text="Узнал цену / сроки">Цена / сроки</button>
+          <button type="button" class="chip" data-text="Просто посмотреть">Подумает</button>
+          <button type="button" class="chip" data-text="Нет запчасти">Нет запчасти</button>
+          <button type="button" class="chip" data-text="Долго ждать">Долго ждать</button>
+          <button type="button" class="chip" data-text="Сравнивает с конкурентами">Конкуренты</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </form>
+
+      <details>
+        <summary>Менеджеры</summary>
+        <div class="managers-list" id="managersList"></div>
+        <div class="add-row">
+          <input type="text" id="addManagerInput" placeholder="Имя">
+          <button type="button" class="btn btn-secondary" id="addManagerBtn">+</button>
+        </div>
+      </details>
     </section>
 
-    <div class="grid-2">
-      <section class="panel">
-        <h2>Быстрая запись</h2>
-        <form id="recordForm">
-          <div class="form-step">
-            <label for="managerSelect">1. Менеджер</label>
-            <select id="managerSelect" required></select>
-            <div class="manager-new" id="managerNewWrap">
-              <input type="text" id="managerNew" placeholder="Имя нового менеджера">
-            </div>
-          </div>
+    <section class="panel">
+      <h2>Отчёт за день</h2>
+      <label for="reportDate">Дата</label>
+      <input type="date" id="reportDate">
+      <pre class="report-preview" id="reportPreview"></pre>
+      <div class="report-actions">
+        <button type="button" class="btn btn-wa" id="whatsappBtn">WhatsApp</button>
+        <button type="button" class="btn btn-secondary" id="copyReportBtn">Копировать</button>
+      </div>
+    </section>
 
-          <div class="form-step">
-            <label>2. Зачем пришёл</label>
-            <div class="chip-grid" id="reasonChips">
-              <button type="button" class="chip" data-reason="Узнал цену / сроки">Цена / сроки</button>
-              <button type="button" class="chip" data-reason="Не устроила цена">Дорого</button>
-              <button type="button" class="chip" data-reason="Просто посмотреть / подумать">Подумает</button>
-              <button type="button" class="chip" data-reason="Сравнивает с конкурентами">Конкуренты</button>
-              <button type="button" class="chip" data-reason="Нет нужной запчасти / услуги">Нет запчасти</button>
-              <button type="button" class="chip" data-reason="Долго ждать ремонт">Долго ждать</button>
-              <button type="button" class="chip" data-reason="Диагностика без ремонта">Только диагностика</button>
-              <button type="button" class="chip" data-reason="__other__">Другое</button>
-            </div>
-            <input type="text" id="reasonCustom" class="reason-custom-input" placeholder="Своя причина">
-            <input type="hidden" id="reasonValue" value="">
-          </div>
-
-          <div class="form-step">
-            <label>3. Что в итоге</label>
-            <div class="outcome-group" id="outcomeGroup">
-              <button type="button" class="outcome-btn active" data-outcome="lost">
-                Потеря
-                <small>Ушёл без телефона и покупки</small>
-              </button>
-              <button type="button" class="outcome-btn" data-outcome="phone">
-                Оставил телефон
-                <small>Контакт есть, покупки нет</small>
-              </button>
-              <button type="button" class="outcome-btn" data-outcome="sale">
-                Купил / заказал
-                <small>Ремонт или покупка</small>
-              </button>
-            </div>
-            <label class="check-row">
-              <input type="checkbox" id="notServedCheck">
-              Не удалось обслужить
-            </label>
-          </div>
-
-          <input type="text" id="comment" placeholder="Комментарий (необязательно)">
-          <div class="date-row" id="dateRow">
-            <label for="date">Дата записи</label>
-            <input type="date" id="date" required>
-          </div>
-          <button type="button" class="link-btn" id="toggleDateBtn">Другая дата</button>
-
-          <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
-
-        <details class="managers-setup">
-          <summary>Список менеджеров</summary>
-          <div class="managers-list" id="managersList"></div>
-          <div class="add-manager-row">
-            <input type="text" id="addManagerInput" placeholder="Добавить менеджера">
-            <button type="button" class="btn btn-secondary" id="addManagerBtn">Добавить</button>
-          </div>
-        </details>
-      </section>
-
-      <section class="panel">
-        <h2>Топ причин (без телефона)</h2>
-        <div class="reasons-chart" id="reasonsChart"></div>
-
-        <h2 style="margin-top: 24px;">Журнал</h2>
-        <div class="toolbar">
-          <select id="filterManager">
-            <option value="all">Все менеджеры</option>
-          </select>
-          <select id="filterType">
-            <option value="all">Все записи</option>
-            <option value="no-phone">Без телефона</option>
-            <option value="no-purchase">Не купили</option>
-            <option value="not-served">Не обслужены</option>
-            <option value="lost">Потери</option>
-          </select>
-          <button type="button" class="btn btn-secondary" id="exportBtn">Экспорт CSV</button>
-          <button type="button" class="btn btn-danger" id="clearBtn" title="Удалить все данные">Очистить</button>
-        </div>
-        <div class="records-list" id="recordsList"></div>
-      </section>
-    </div>
+    <section class="panel">
+      <h2>Записи за день</h2>
+      <div id="recordsList"></div>
+      <div class="panel-foot">
+        <button type="button" class="btn btn-danger" id="clearDayBtn">Очистить день</button>
+      </div>
+    </section>
   </div>
 
-  <div class="sticky-report">
+  <div class="sticky-bar">
     <div class="report-actions">
-      <button type="button" class="btn btn-whatsapp" id="whatsappBtnMobile">WhatsApp — отчёт за день</button>
-      <button type="button" class="btn btn-secondary btn-copy" id="copyReportBtnMobile">Копировать</button>
+      <button type="button" class="btn btn-wa" id="whatsappBtn2">WhatsApp</button>
+      <button type="button" class="btn btn-secondary" id="copyReportBtn2">Копировать</button>
     </div>
   </div>
 
-  <div class="toast" id="toast">Сохранено</div>
+  <div class="toast" id="toast"></div>
 
   <script>
     const STORAGE_KEY = 'repair_visits_v1';
@@ -884,45 +326,31 @@
 
     let records = loadRecords();
     let managers = loadManagers();
-    let period = 'today';
-    let formState = { outcome: 'lost', reason: '' };
 
-    const OUTCOMES = {
-      lost:  { leftPhone: 'no',  purchased: 'no' },
-      phone: { leftPhone: 'yes', purchased: 'no' },
-      sale:  { leftPhone: 'yes', purchased: 'yes' }
-    };
-
-    function getRecordFlags() {
-      const o = OUTCOMES[formState.outcome] || OUTCOMES.lost;
-      const notServed = document.getElementById('notServedCheck').checked;
+    function normalizeRecord(r) {
+      if (r.text) return r;
+      const text = ((r.comment || '').trim() || r.reason || '').trim();
       return {
-        leftPhone: o.leftPhone,
-        purchased: o.purchased,
-        served: notServed ? 'no' : 'yes'
+        id: r.id || crypto.randomUUID(),
+        manager: r.manager || '',
+        date: r.date,
+        text,
+        createdAt: r.createdAt || new Date().toISOString()
       };
     }
 
-    function getFormDate() {
-      return document.getElementById('dateRow').classList.contains('visible')
-        ? document.getElementById('date').value
-        : todayStr();
+    function loadRecords() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return list.map(normalizeRecord).filter(r => r.text);
+      } catch {
+        return [];
+      }
     }
 
-    function resetRecordForm() {
-      formState = { outcome: 'lost', reason: '' };
-      document.getElementById('reasonValue').value = '';
-      document.getElementById('reasonCustom').value = '';
-      document.getElementById('reasonCustom').classList.remove('visible');
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.outcome-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.outcome === 'lost');
-      });
-      document.getElementById('notServedCheck').checked = false;
-      document.getElementById('comment').value = '';
-      document.getElementById('date').value = todayStr();
-      document.getElementById('dateRow').classList.remove('visible');
-      document.getElementById('toggleDateBtn').textContent = 'Другая дата';
+    function saveRecords() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
     }
 
     function loadManagers() {
@@ -942,108 +370,47 @@
       localStorage.setItem(MANAGERS_KEY, JSON.stringify(managers));
     }
 
-    function getManagerFromForm() {
-      const sel = document.getElementById('managerSelect').value;
-      if (sel === '__new__') {
-        return document.getElementById('managerNew').value.trim();
-      }
-      return sel;
-    }
-
-    function ensureManager(name) {
-      const n = name.trim();
-      if (!n) return;
-      if (!managers.includes(n)) {
-        managers.push(n);
-        managers.sort((a, b) => a.localeCompare(b, 'ru'));
-        saveManagers();
-      }
-      localStorage.setItem(LAST_MANAGER_KEY, n);
-    }
-
-    function renderManagerSelect() {
-      const sel = document.getElementById('managerSelect');
-      const last = localStorage.getItem(LAST_MANAGER_KEY) || '';
-      sel.innerHTML = `
-        <option value="">— выберите менеджера —</option>
-        ${managers.map(m => `<option value="${escapeAttr(m)}"${m === last ? ' selected' : ''}>${escapeHtml(m)}</option>`).join('')}
-        <option value="__new__">+ Новый менеджер</option>
-      `;
-      document.getElementById('managerNewWrap').classList.toggle('visible', sel.value === '__new__');
-
-      const filterSel = document.getElementById('filterManager');
-      const prev = filterSel.value;
-      filterSel.innerHTML = `
-        <option value="all">Все менеджеры</option>
-        ${managers.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('')}
-      `;
-      if ([...filterSel.options].some(o => o.value === prev)) filterSel.value = prev;
-
-      document.getElementById('managersList').innerHTML = managers.length
-        ? managers.map(m => `
-            <span class="manager-chip">
-              ${escapeHtml(m)}
-              <button type="button" title="Удалить из списка" onclick="removeManager('${escapeAttr(m)}')">&times;</button>
-            </span>
-          `).join('')
-        : '<span style="color:var(--muted);font-size:0.8rem">Добавьте менеджеров выше</span>';
-    }
-
-    function escapeAttr(s) {
-      return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;');
-    }
-
-    window.removeManager = function(name) {
-      if (!confirm(`Убрать «${name}» из списка? Старые записи с этим именем останутся.`)) return;
-      managers = managers.filter(m => m !== name);
-      saveManagers();
-      renderManagerSelect();
-    };
-
-    function loadRecords() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveRecords() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    }
-
     function todayStr() {
       return new Date().toISOString().slice(0, 10);
     }
 
-    function filterByPeriod(list) {
-      const now = new Date();
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-      return list.filter(r => {
-        const d = new Date(r.date + 'T12:00:00');
-        if (period === 'all') return true;
-        if (period === 'today') return r.date === todayStr();
-        if (period === 'week') {
-          const weekAgo = new Date(startOfDay);
-          weekAgo.setDate(weekAgo.getDate() - 7);
-          return d >= weekAgo;
-        }
-        if (period === 'month') {
-          const monthAgo = new Date(startOfDay);
-          monthAgo.setMonth(monthAgo.getMonth() - 1);
-          return d >= monthAgo;
-        }
-        return true;
-      });
+    function formatDate(iso) {
+      const [y, m, d] = iso.split('-');
+      return `${d}.${m}.${y}`;
     }
 
-    function getActiveData() {
-      let data = filterByPeriod(records);
-      const mgr = document.getElementById('filterManager')?.value;
-      if (mgr && mgr !== 'all') data = data.filter(r => r.manager === mgr);
-      return data;
+    function escapeHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function getDayData(dateStr) {
+      return records.filter(r => r.date === dateStr);
+    }
+
+    function buildDailyReport(dateStr) {
+      const data = getDayData(dateStr);
+      const total = data.length;
+
+      if (!total) {
+        return `Отчёт за ${formatDate(dateStr)}\n\nЗа этот день записей нет.`;
+      }
+
+      const mgrs = [...new Set(data.map(r => r.manager).filter(Boolean))];
+      const sorted = [...data].sort((a, b) =>
+        (a.createdAt || '').localeCompare(b.createdAt || '')
+      );
+
+      let text = `Отчёт за ${formatDate(dateStr)}\n\n`;
+      text += `Всего обращений: ${total}\n`;
+      text += `Менеджеры: ${mgrs.join(', ') || '—'}\n`;
+      text += `\nПочему ушли\n`;
+      sorted.forEach((r, i) => {
+        text += `• ${i + 1} ${r.text}\n`;
+      });
+
+      return text.trim();
     }
 
     function showToast(msg) {
@@ -1053,219 +420,95 @@
       setTimeout(() => t.classList.remove('show'), 2000);
     }
 
-    function renderStats() {
-      const data = getActiveData();
-      const total = data.length;
-      const noPhone = data.filter(r => r.leftPhone === 'no').length;
-      const noPurchase = data.filter(r => r.purchased === 'no').length;
-      const notServed = data.filter(r => r.served === 'no').length;
-      const lost = data.filter(r => r.leftPhone === 'no' && r.purchased === 'no').length;
-
-      const periodLabel = {
-        today: 'сегодня',
-        week: 'за неделю',
-        month: 'за месяц',
-        all: 'всего'
-      }[period];
-
-      document.getElementById('stats').innerHTML = `
-        <div class="stat-card">
-          <div class="stat-label">Обращений ${periodLabel}</div>
-          <div class="stat-value">${total}</div>
-        </div>
-        <div class="stat-card highlight">
-          <div class="stat-label">Без телефона</div>
-          <div class="stat-value">${noPhone}</div>
-        </div>
-        <div class="stat-card highlight">
-          <div class="stat-label">Не купили</div>
-          <div class="stat-value">${noPurchase}</div>
-        </div>
-        <div class="stat-card danger">
-          <div class="stat-label">Не обслужены</div>
-          <div class="stat-value">${notServed}</div>
-        </div>
-        <div class="stat-card danger">
-          <div class="stat-label">Потери</div>
-          <div class="stat-value">${lost}</div>
-        </div>
+    function renderManagerSelect() {
+      const sel = document.getElementById('managerSelect');
+      const last = localStorage.getItem(LAST_MANAGER_KEY) || '';
+      sel.innerHTML = `
+        <option value="">— менеджер —</option>
+        ${managers.map(m => `<option value="${escapeHtml(m)}"${m === last ? ' selected' : ''}>${escapeHtml(m)}</option>`).join('')}
+        <option value="__new__">+ Новый</option>
       `;
+      document.getElementById('managerNewWrap').classList.toggle('visible', sel.value === '__new__');
+
+      document.getElementById('managersList').innerHTML = managers.length
+        ? managers.map(m => `
+            <span class="manager-chip">${escapeHtml(m)}
+              <button type="button" onclick="removeManager(${JSON.stringify(m)})">&times;</button>
+            </span>
+          `).join('')
+        : '<span style="color:var(--muted)">Добавьте менеджера</span>';
     }
 
-    function renderReasonsChart() {
-      const data = getActiveData().filter(r => r.leftPhone === 'no');
-      const counts = {};
-      data.forEach(r => {
-        counts[r.reason] = (counts[r.reason] || 0) + 1;
-      });
-      const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
-      const max = sorted[0]?.[1] || 1;
-      const el = document.getElementById('reasonsChart');
+    window.removeManager = function(name) {
+      if (!confirm(`Убрать «${name}» из списка?`)) return;
+      managers = managers.filter(m => m !== name);
+      saveManagers();
+      renderManagerSelect();
+    };
 
-      if (!sorted.length) {
-        el.innerHTML = '<div class="empty">Пока нет данных за выбранный период</div>';
+    function getManagerFromForm() {
+      const sel = document.getElementById('managerSelect').value;
+      if (sel === '__new__') return document.getElementById('managerNew').value.trim();
+      return sel;
+    }
+
+    function ensureManager(name) {
+      if (!name) return;
+      if (!managers.includes(name)) {
+        managers.push(name);
+        managers.sort((a, b) => a.localeCompare(b, 'ru'));
+        saveManagers();
+      }
+      localStorage.setItem(LAST_MANAGER_KEY, name);
+    }
+
+    function updateReport() {
+      const dateStr = document.getElementById('reportDate').value || todayStr();
+      document.getElementById('reportPreview').textContent = buildDailyReport(dateStr);
+    }
+
+    function renderRecords() {
+      const dateStr = document.getElementById('reportDate').value || todayStr();
+      const data = getDayData(dateStr).sort((a, b) =>
+        (b.createdAt || '').localeCompare(a.createdAt || '')
+      );
+      const el = document.getElementById('recordsList');
+
+      if (!data.length) {
+        el.innerHTML = '<div class="empty">Нет записей</div>';
         return;
       }
 
-      el.innerHTML = sorted.map(([name, count]) => `
-        <div class="reason-row">
-          <span class="reason-name" title="${escapeHtml(name)}">${escapeHtml(name)}</span>
-          <div class="reason-bar-wrap"><div class="reason-bar" style="width:${(count / max) * 100}%"></div></div>
-          <span class="reason-count">${count}</span>
+      el.innerHTML = data.map(r => `
+        <div class="record-item">
+          <div><strong>${escapeHtml(r.manager)}</strong> — ${escapeHtml(r.text)}</div>
+          <button type="button" class="btn btn-danger" onclick="deleteRecord('${r.id}')">×</button>
         </div>
       `).join('');
     }
 
-    function escapeHtml(s) {
-      const d = document.createElement('div');
-      d.textContent = s;
-      return d.innerHTML;
+    function render() {
+      updateReport();
+      renderRecords();
     }
 
-    function matchesFilter(r) {
-      const f = document.getElementById('filterType').value;
-      if (f === 'no-phone') return r.leftPhone === 'no';
-      if (f === 'no-purchase') return r.purchased === 'no';
-      if (f === 'not-served') return r.served === 'no';
-      if (f === 'lost') return r.leftPhone === 'no' && r.purchased === 'no';
-      return true;
-    }
+    window.deleteRecord = function(id) {
+      if (!confirm('Удалить запись?')) return;
+      records = records.filter(r => r.id !== id);
+      saveRecords();
+      render();
+    };
 
-    function renderRecords() {
-      const data = getActiveData()
-        .filter(matchesFilter)
-        .sort((a, b) => b.date.localeCompare(a.date) || (b.createdAt || '').localeCompare(a.createdAt || ''));
-
-      const el = document.getElementById('recordsList');
-      if (!data.length) {
-        el.innerHTML = '<div class="empty">Записей нет</div>';
-        return;
-      }
-
-      el.innerHTML = data.map(r => {
-        const cls = [
-          r.leftPhone === 'no' ? 'no-phone' : '',
-          r.served === 'no' ? 'not-served' : ''
-        ].filter(Boolean).join(' ');
-
-        return `
-          <div class="record-item ${cls}" data-id="${r.id}">
-            <div class="record-meta">
-              <span>${formatDate(r.date)}</span>
-              <button type="button" class="btn btn-danger" onclick="deleteRecord('${r.id}')">Удалить</button>
-            </div>
-            ${r.manager ? `<div class="record-manager">${escapeHtml(r.manager)}</div>` : ''}
-            <div class="record-reason">${escapeHtml(r.reason)}</div>
-            <div class="tags">${recordTagsHtml(r)}</div>
-            ${r.comment ? `<div style="margin-top:8px;color:var(--muted)">${escapeHtml(r.comment)}</div>` : ''}
-          </div>
-        `;
-      }).join('');
-    }
-
-    function formatDate(iso) {
-      const [y, m, d] = iso.split('-');
-      return `${d}.${m}.${y}`;
-    }
-
-    function getDayData(dateStr) {
-      return records.filter(r => r.date === dateStr);
-    }
-
-    function recordTagsHtml(r) {
-      const tags = [];
-      if (r.purchased === 'yes') tags.push('<span class="tag ok">Купил</span>');
-      else if (r.leftPhone === 'yes') tags.push('<span class="tag warn">Телефон</span>');
-      else tags.push('<span class="tag bad">Потеря</span>');
-      if (r.served === 'no') tags.push('<span class="tag bad">Не обслужили</span>');
-      return tags.join('');
-    }
-
-    function buildDailyReport(dateStr) {
-      const data = getDayData(dateStr);
-      const total = data.length;
-      const noPhone = data.filter(r => r.leftPhone === 'no').length;
-      const noPurchase = data.filter(r => r.purchased === 'no').length;
-      const notServed = data.filter(r => r.served === 'no').length;
-      const lost = data.filter(r => r.leftPhone === 'no' && r.purchased === 'no').length;
-
-      if (!total) {
-        return `Отчёт за ${formatDate(dateStr)}\n\nЗа этот день записей нет.`;
-      }
-
-      let text = `ОТЧЁТ ЗА ${formatDate(dateStr)}\n`;
-      text += `━━━━━━━━━━━━━━━━\n\n`;
-      text += `ПОТЕРИ ЗА ДЕНЬ: ${lost} ${pluralPeople(lost)}\n`;
-      text += `(зашли, не оставили телефон и не купили)\n\n`;
-      text += `Всего обращений: ${total}\n`;
-      text += `Без телефона: ${noPhone}\n`;
-      text += `Не купили: ${noPurchase}\n`;
-      text += `Не обслужили: ${notServed}\n`;
-
-      const byManager = {};
-      data.forEach(r => {
-        const m = r.manager || 'Не указан';
-        if (!byManager[m]) byManager[m] = { total: 0, lost: 0 };
-        byManager[m].total++;
-        if (r.leftPhone === 'no' && r.purchased === 'no') byManager[m].lost++;
-      });
-      const mgrSorted = Object.entries(byManager).sort((a, b) => b[1].lost - a[1].lost || b[1].total - a[1].total);
-      if (mgrSorted.length) {
-        text += `\nМенеджеры:\n`;
-        mgrSorted.forEach(([name, s]) => {
-          text += `• ${name} — ${s.total} обращ., потерь ${s.lost}\n`;
-        });
-      }
-
-      const reasonCounts = {};
-      data.filter(r => r.leftPhone === 'no' && r.purchased === 'no').forEach(r => {
-        reasonCounts[r.reason] = (reasonCounts[r.reason] || 0) + 1;
-      });
-      const reasons = Object.entries(reasonCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
-      if (reasons.length) {
-        text += `\nПочему ушли (топ):\n`;
-        reasons.forEach(([name, count]) => {
-          text += `• ${name} — ${count}\n`;
-        });
-      }
-
-      const sorted = [...data].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-      text += `\nСписок:\n`;
-      sorted.forEach((r, i) => {
-        text += `\n${i + 1}. ${r.manager ? r.manager + ' — ' : ''}${r.reason}`;
-        if (r.served === 'no') text += `\n   Не обслужили`;
-        if (r.comment) text += `\n   ${r.comment}`;
-      });
-
-      return text.trim();
-    }
-
-    function pluralPeople(n) {
-      const mod10 = n % 10;
-      const mod100 = n % 100;
-      if (mod100 >= 11 && mod100 <= 14) return 'человек';
-      if (mod10 === 1) return 'человек';
-      if (mod10 >= 2 && mod10 <= 4) return 'человека';
-      return 'человек';
-    }
-
-    function updateReportPreview() {
+    async function copyReport() {
       const dateStr = document.getElementById('reportDate').value || todayStr();
       const text = buildDailyReport(dateStr);
-      const el = document.getElementById('reportPreview');
-      if (el) el.textContent = text;
-      return text;
-    }
-
-    async function copyDailyReport() {
-      const text = updateReportPreview();
-      if (!getDayData(document.getElementById('reportDate').value || todayStr()).length) {
-        alert('За выбранный день записей нет');
+      if (!getDayData(dateStr).length) {
+        alert('За этот день записей нет');
         return;
       }
       try {
         await navigator.clipboard.writeText(text);
-        showToast('Скопировано — вставьте в WhatsApp');
+        showToast('Скопировано');
       } catch {
         const ta = document.createElement('textarea');
         ta.value = text;
@@ -1275,49 +518,58 @@
         ta.select();
         document.execCommand('copy');
         document.body.removeChild(ta);
-        showToast('Скопировано — вставьте в WhatsApp');
+        showToast('Скопировано');
       }
     }
 
-    function sendWhatsAppReport() {
+    function sendWhatsApp() {
       const dateStr = document.getElementById('reportDate').value || todayStr();
       const text = buildDailyReport(dateStr);
       if (!getDayData(dateStr).length) {
-        alert('За выбранный день записей нет');
+        alert('За этот день записей нет');
         return;
       }
-      const url = 'https://wa.me/?text=' + encodeURIComponent(text);
-      window.open(url, '_blank');
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
     }
 
-    function render() {
-      renderStats();
-      renderReasonsChart();
-      renderRecords();
-      updateReportPreview();
-    }
-
-    window.deleteRecord = function(id) {
-      if (!confirm('Удалить эту запись?')) return;
-      records = records.filter(r => r.id !== id);
-      saveRecords();
-      render();
-    };
-
-    document.getElementById('date').value = todayStr();
     document.getElementById('reportDate').value = todayStr();
-
-    document.getElementById('reportDate').addEventListener('change', updateReportPreview);
-
-    document.getElementById('copyReportBtn').addEventListener('click', copyDailyReport);
-    document.getElementById('copyReportBtnMobile').addEventListener('click', copyDailyReport);
-    document.getElementById('whatsappBtn').addEventListener('click', sendWhatsAppReport);
-    document.getElementById('whatsappBtnMobile').addEventListener('click', sendWhatsAppReport);
-
     renderManagerSelect();
 
     document.getElementById('managerSelect').addEventListener('change', function() {
       document.getElementById('managerNewWrap').classList.toggle('visible', this.value === '__new__');
+    });
+
+    document.getElementById('reasonChips').addEventListener('click', function(e) {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.getElementById('whyText').value = chip.dataset.text;
+      document.getElementById('whyText').focus();
+    });
+
+    document.getElementById('recordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const manager = getManagerFromForm();
+      const text = document.getElementById('whyText').value.trim();
+      if (!manager) { alert('Выберите менеджера'); return; }
+      if (!text) { alert('Напишите, почему ушли'); return; }
+
+      ensureManager(manager);
+      const dateStr = document.getElementById('reportDate').value || todayStr();
+
+      records.push({
+        id: crypto.randomUUID(),
+        manager,
+        date: dateStr,
+        text,
+        createdAt: new Date().toISOString()
+      });
+
+      saveRecords();
+      renderManagerSelect();
+      document.getElementById('managerSelect').value = manager;
+      document.getElementById('whyText').value = '';
+      showToast('Сохранено');
+      render();
     });
 
     document.getElementById('addManagerBtn').addEventListener('click', function() {
@@ -1327,143 +579,23 @@
       document.getElementById('addManagerInput').value = '';
       renderManagerSelect();
       document.getElementById('managerSelect').value = name;
-      showToast('Менеджер добавлен');
     });
 
-    document.getElementById('reasonChips').addEventListener('click', function(e) {
-      const chip = e.target.closest('.chip');
-      if (!chip) return;
-      this.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      const val = chip.dataset.reason;
-      const customEl = document.getElementById('reasonCustom');
-      if (val === '__other__') {
-        formState.reason = '';
-        customEl.classList.add('visible');
-        customEl.focus();
-      } else {
-        formState.reason = val;
-        document.getElementById('reasonValue').value = val;
-        customEl.classList.remove('visible');
-        customEl.value = '';
-      }
-    });
+    document.getElementById('reportDate').addEventListener('change', render);
+    document.getElementById('copyReportBtn').addEventListener('click', copyReport);
+    document.getElementById('copyReportBtn2').addEventListener('click', copyReport);
+    document.getElementById('whatsappBtn').addEventListener('click', sendWhatsApp);
+    document.getElementById('whatsappBtn2').addEventListener('click', sendWhatsApp);
 
-    document.getElementById('reasonCustom').addEventListener('input', function() {
-      formState.reason = this.value.trim();
-      document.getElementById('reasonValue').value = formState.reason;
-    });
-
-    document.getElementById('outcomeGroup').addEventListener('click', function(e) {
-      const btn = e.target.closest('.outcome-btn');
-      if (!btn) return;
-      formState.outcome = btn.dataset.outcome;
-      this.querySelectorAll('.outcome-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-
-    document.getElementById('toggleDateBtn').addEventListener('click', function() {
-      const row = document.getElementById('dateRow');
-      const open = row.classList.toggle('visible');
-      if (open) {
-        this.textContent = 'Сегодня';
-        document.getElementById('date').value = todayStr();
-      } else {
-        this.textContent = 'Другая дата';
-        document.getElementById('date').value = todayStr();
-      }
-    });
-
-    document.getElementById('recordForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const manager = getManagerFromForm();
-      if (!manager) {
-        alert('Выберите менеджера');
-        return;
-      }
-      ensureManager(manager);
-
-      let reason = formState.reason || document.getElementById('reasonValue').value;
-      const activeChip = document.querySelector('.chip.active');
-      if (activeChip?.dataset.reason === '__other__') {
-        reason = document.getElementById('reasonCustom').value.trim();
-      }
-      if (!reason) {
-        alert('Выберите причину (кнопку «Зачем пришёл»)');
-        return;
-      }
-
-      const flags = getRecordFlags();
-      const dateStr = getFormDate();
-
-      records.push({
-        id: crypto.randomUUID(),
-        manager,
-        date: dateStr,
-        reason,
-        leftPhone: flags.leftPhone,
-        purchased: flags.purchased,
-        served: flags.served,
-        comment: document.getElementById('comment').value.trim(),
-        createdAt: new Date().toISOString()
-      });
-
-      saveRecords();
-      renderManagerSelect();
-      document.getElementById('managerSelect').value = manager;
-      document.getElementById('managerNew').value = '';
-      document.getElementById('managerNewWrap').classList.remove('visible');
-      document.getElementById('reportDate').value = dateStr;
-      resetRecordForm();
-      showToast('Сохранено');
-      render();
-    });
-
-    document.getElementById('filterType').addEventListener('change', renderRecords);
-    document.getElementById('filterManager').addEventListener('change', render);
-
-    document.getElementById('periodTabs').addEventListener('click', function(e) {
-      const tab = e.target.closest('.period-tab');
-      if (!tab) return;
-      period = tab.dataset.period;
-      this.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      render();
-    });
-
-    document.getElementById('exportBtn').addEventListener('click', function() {
-      const data = getActiveData();
-      if (!data.length) {
-        alert('Нет данных для экспорта');
-        return;
-      }
-      const header = ['Дата', 'Менеджер', 'Причина', 'Телефон', 'Покупка', 'Обслужен', 'Комментарий'];
-      const rows = data.map(r => [
-        r.date,
-        r.manager || '',
-        r.reason,
-        r.leftPhone === 'yes' ? 'Да' : 'Нет',
-        r.purchased === 'yes' ? 'Да' : 'Нет',
-        r.served === 'yes' ? 'Да' : 'Нет',
-        (r.comment || '').replace(/"/g, '""')
-      ]);
-      const csv = [header, ...rows].map(row => row.map(c => `"${c}"`).join(';')).join('\n');
-      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `обращения_${todayStr()}.csv`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    });
-
-    document.getElementById('clearBtn').addEventListener('click', function() {
-      if (!confirm('Удалить ВСЕ записи? Это нельзя отменить.')) return;
-      if (!confirm('Точно удалить все данные?')) return;
-      records = [];
+    document.getElementById('clearDayBtn').addEventListener('click', function() {
+      const dateStr = document.getElementById('reportDate').value || todayStr();
+      const n = getDayData(dateStr).length;
+      if (!n) return;
+      if (!confirm(`Удалить все ${n} записей за ${formatDate(dateStr)}?`)) return;
+      records = records.filter(r => r.date !== dateStr);
       saveRecords();
       render();
-      showToast('Данные очищены');
+      showToast('День очищен');
     });
 
     render();
